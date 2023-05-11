@@ -26,9 +26,10 @@ namespace Application.Mappings
                 //.ForMember(dest => dest.Url, opt => opt.MapFrom(src => $"/{src.Parent.Slug}-{src.Parent.Id}/{src.Slug}-{src.Id}" ))
                 //.ForMember(dest => dest.Url, opt => opt.MapFrom(src =>$"{src.Slug}-{src.Id}"))
 
-                //.ForMember(dest => dest.Url, opt => opt.MapFrom(src => $"/{src.Parent.Slug}-{src.Parent.Id}/{src.Slug}-{src.Id}"))
+                .ForMember(dest => dest.Url, opt =>
+                    opt.MapFrom(src => $"/{src.Parent.Slug}/{src.Slug}-{src.Id}"))
 
-                .ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Slug))
+                //.ForMember(dest => dest.Url, opt => opt.MapFrom(src => src.Slug))
 
                 // формирует не полный url, без учета родителей
                 //.ForMember(dest => dest.Url, opt

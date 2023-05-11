@@ -22,14 +22,14 @@ namespace Application.Features.Catalog.Commands.UpdateCategory
 
         public async Task<Unit> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            // получаю категорию для обнавления
-            Category updateCategory = _catalogContext.Categories
+            // получаю категорию для обновления 
+            var updateCategory = _catalogContext.Categories
                 .Where(c => c.Id == request.Id)
                 .Include(p=>p.Parent)
                 .FirstOrDefault();
             if (updateCategory == null) throw new Exception("Category not found");
-            // проверяю, будет ли конфиктовать переименованная категория с другими категориями
-            bool exist = _catalogContext.Categories
+            // проверяю, будет ли конфликтовать переименованная категория с другими категориями
+            var exist = _catalogContext.Categories
                 .Where(c => c.Parent == updateCategory.Parent && c.Id != request.Id)
                 .Any(e => e.Title == request.Title);
 
@@ -46,3 +46,4 @@ namespace Application.Features.Catalog.Commands.UpdateCategory
         }
     }
 }
+    

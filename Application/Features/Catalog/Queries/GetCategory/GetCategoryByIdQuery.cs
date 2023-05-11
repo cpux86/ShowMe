@@ -10,7 +10,7 @@ namespace Application.Features.Catalog.Queries.GetCategory
 {
     public class GetCategoryByIdQuery : IRequest<List<MenuViewModel>>
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public int Level { get; set; }
     }
 }

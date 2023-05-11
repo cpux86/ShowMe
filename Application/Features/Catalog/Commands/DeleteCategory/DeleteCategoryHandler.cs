@@ -23,6 +23,7 @@ namespace Application.Features.Catalog.Commands.DeleteCategory
 
         public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
         {
+
             // получаю категорию для удаления
             // если запрошенной категории не существует, то выбрасываем исключение
             var category = await _catalogContext.Categories
@@ -33,8 +34,26 @@ namespace Application.Features.Catalog.Commands.DeleteCategory
             // если request.Items = all, то согласно запросу разрешаем удалять категории с ее содержимым
             if (!request.Force && isNotEmpty) throw new Exception("Категория не пуста");
 
+            // вычисляем коэффициент выравнивания ключей.
+            // вычисляется: (правый ключ уд.кат + 1 - левый ключ уд.кат)
+            var index = (category.RightKey + 1 - category.LeftKey);
+
+            // обновляю правые ключи 
+            await _catalogContext.Categories
+                .Where(k => k.RightKey > category.RightKey)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(c => c.RightKey, c => c.RightKey - index), CancellationToken.None);
+
+            // обновляем левые ключи
+            await _catalogContext.Categories
+                .Where(k => k.LeftKey > category.RightKey)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(c => c.LeftKey, c => c.LeftKey - index), CancellationToken.None);
+
             try
             {
+                
+                
                 _catalogContext.Categories.Remove(category);
                 await _catalogContext.SaveChangesAsync(cancellationToken);
             }

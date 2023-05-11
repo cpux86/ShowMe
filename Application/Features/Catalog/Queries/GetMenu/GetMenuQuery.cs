@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities.Catalog;
 
 namespace Application.Features.Catalog.Queries.GetMenu
 {
-    public class GetMenuQuery : IRequest<List<MenuViewModel>>
+    public class GetMenuQuery : IRequest<List<Category>>
     {
     }
 }

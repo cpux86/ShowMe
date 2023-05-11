@@ -13,7 +13,7 @@ namespace Application.Features.Catalog.Queries.GetMenu
     {
         public long Id { get; set; }
         public string Title { get; set; }
-        [JsonPropertyName("image")]
+        [JsonPropertyName("image_url")]
         public string ImageUrl { get; set; }
         public string Url { get; set; }
         //[JsonIgnore]
@@ -21,8 +21,4 @@ namespace Application.Features.Catalog.Queries.GetMenu
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public IEnumerable<MenuViewModel> Categories { get ; set; }
     }
-    //public class MenuVm
-    //{
-    //    public IEnumerable<MenuViewModel> Categories { get; set; }
-    //}
 }

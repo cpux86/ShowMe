@@ -31,11 +31,11 @@ namespace WebApi.Controllers.v1
         // Получить все категории каталога
         [Route("categories")]
         [HttpGet]
-        public async Task<ActionResult<Response<MenuViewModel>>> GetAllMenu(int? id, int? level)
+        public async Task<ActionResult<Response<Category>>> GetAllMenu(int? id, int? level)
         {
             var query = new GetMenuQuery();
             var menu = await Mediator.Send(query);
-            var vm = new Response<List<MenuViewModel>>(menu);
+            var vm = new Response<List<Category>>(menu);
             return Ok(vm);
         }
 

@@ -2,7 +2,6 @@
 using Domain.Common;
 using Domain.Entities.OrderAggregate;
 using Domain.Entities.ProductAggregate;
-using Domain.Utils;
 using NickBuhro.Translit;
 using System;
 using System.Collections.Generic;
@@ -11,13 +10,14 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using Domain.SEO;
 using JetBrains.Annotations;
+using SlugGenerator;
 
 namespace Domain.Entities.Catalog
 {
     public class Category
     {
         // Максимальная глубина вложенности меню
-        private const int MAX_DEPTH = 5;
+        private const int MAX_DEPTH = 3;
         //private const int MAX_DEPH = 5;
         public Category()
         {
@@ -26,9 +26,9 @@ namespace Domain.Entities.Catalog
 
         public Category(string title)
         {
-            Title = title;
+            Title = title.Trim();
             // создаю slug для новой категории из ее имени
-            Slug = SlugGenerator.ToUrlSlug(title);
+            Slug = this.Title.GenerateSlug();
         }
 
         #region Fields
@@ -40,11 +40,15 @@ namespace Domain.Entities.Catalog
         /// Путь к файлу изображения категории
         /// </summary>
         [CanBeNull]
+        [JsonPropertyName("image_url")]
         public string ImageUrl { get; private set; } = null;
         /// <summary>
         /// последняя секция URL
         /// </summary>
+        [JsonPropertyName("url")]
         public string Slug { get; set; }
+
+        //public string Type { get;set; }
 
         /// <summary>
         /// Глубина вложенности меню. Нужно для контроля глубины вложенности меню. Может уберу со временем!!!!!
@@ -58,10 +62,14 @@ namespace Domain.Entities.Catalog
         /// Порядок сортировки
         /// </summary>
         public int Sort { get; set; }
+        public int LeftKey { get; set; }
+        public int RightKey { get; set; }
+        [JsonIgnore]
         public int? ParentId { get; set; }
         /// <summary>
         /// Родительская категория
         /// </summary>
+        [JsonIgnore]
         public virtual Category Parent { get; private set; }
 
         // дочерние категории
@@ -96,14 +104,18 @@ namespace Domain.Entities.Catalog
             // устанавливаю значение глубины для новой категории
             children.Level = level;
 
+            // задаем левый и правый ключ
+
+
+
             Categories.Add(children);
         }
 
-        public void Update(string name)
+        public void Update(string title)
         {
-            this.Title = name;
+            this.Title = title.Trim();
 
-            this.Slug = SlugGenerator.ToUrlSlug(name);
+            this.Slug = this.Title.GenerateSlug();
         }
         #endregion
 

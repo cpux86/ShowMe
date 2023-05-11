@@ -7,7 +7,6 @@ using MediatR;
 using WebApi.Middleware;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using MinimalApi.Endpoint.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
